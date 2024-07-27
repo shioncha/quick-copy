@@ -1,0 +1,23 @@
+{
+    "manifest_version": 3,
+    "name": "Quick Copy",
+    "description": "Copy website title and URL to clipboard",
+    "version": "0.0.0.1",
+    "icons": {
+        "16": "icon16.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+    },
+    "action": {
+        "default_title": "Copy website title and URL",
+        "default_icon": "icon16.png"
+    },
+    "background": {
+        "service_worker": "event.js"
+    },
+    "permissions": [
+        "activeTab",
+        "clipboardWrite",
+        "offscreen"
+    ]
+}
