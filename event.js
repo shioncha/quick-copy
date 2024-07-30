@@ -34,16 +34,38 @@ var getUrlTitle = async function() {
     Data.url = tab.url;
 }
 
-var getDate = async function() {
+var getDate = function() {
     const date = new Date();
     Data.date = date.getFullYear() + "." + (date.getMonth() + 1) + "." + date.getDate();
+}
+
+var setMessage = async function() {
+    return new Promise((resolve) => {
+        chrome.storage.local.get(["style"], (result) => {
+            const style = result.style;
+            let message = "";
+            if (style == "md") {
+                message = `[${Data.title}](${Data.url})`;
+            } else {
+                message = `${Data.title}，${Data.url}，${Data.date}`;
+            }
+            resolve(message);
+        });
+    });
 }
 
 chrome.action.onClicked.addListener(async() => {
     await setup();
     await getUrlTitle();
-    await getDate();
-    const message = Data.title + "，" + Data.url + "，" + Data.date;
+    getDate();
+    const message = await setMessage();
     await chrome.runtime.sendMessage(message);
     chrome.offscreen.closeDocument();
+})
+
+// インストール時の初期化
+chrome.runtime.onInstalled.addListener((details) => {
+    if (details.reason == "install") {
+        chrome.storage.local.set({ "style": "default" });
+    }
 })

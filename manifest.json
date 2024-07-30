@@ -18,6 +18,8 @@
     "permissions": [
         "activeTab",
         "clipboardWrite",
-        "offscreen"
-    ]
+        "offscreen",
+        "storage"
+    ],
+    "options_page": "options.html"
 }
