@@ -61,6 +61,12 @@ chrome.action.onClicked.addListener(async() => {
     const message = await setMessage();
     await chrome.runtime.sendMessage(message);
     chrome.offscreen.closeDocument();
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        let sendContent = chrome.tabs.sendMessage(tabs[0].id, { text: message });
+        sendContent
+            .then(() => console.log("sent"))
+            .catch((e) => console.error(e));
+    });
 })
 
 // インストール時の初期化

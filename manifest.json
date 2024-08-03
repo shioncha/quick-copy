@@ -23,11 +23,16 @@
             "description": "Copy website title and URL"
         }
     },
+    "content_scripts": [{
+        "matches": ["<all_urls>"],
+        "js": ["content.js"]
+    }],
     "permissions": [
         "activeTab",
         "clipboardWrite",
         "offscreen",
-        "storage"
+        "storage",
+        "tabs"
     ],
     "options_page": "options.html"
 }
