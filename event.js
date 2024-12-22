@@ -40,6 +40,22 @@ var getDate = function() {
 }
 
 var setMessage = async function() {
+    function escapeLaTeXSpecialChars(input) {
+        const specialChars = {
+            '#': '\\#',
+            '$': '\\$',
+            '%': '\\%',
+            '&': '\\&',
+            '_': '\\_',
+            '{': '\\{',
+            '}': '\\}',
+            '\\': '\\textbackslash ',
+            '^': '\\textasciicircum ',
+            '~': '\\textasciitilde '
+        };
+        return input.replace(/[{}%&#$^_~\\]/g, match => specialChars[match] || match);
+    }
+
     return new Promise((resolve) => {
         chrome.storage.local.get(["style"], (result) => {
             const style = result.style;
@@ -48,6 +64,7 @@ var setMessage = async function() {
                 message = `[${Data.title}](${Data.url})`;
             } else {
                 message = `${Data.title}，${Data.url}，${Data.date}`;
+                message = escapeLaTeXSpecialChars(message);
             }
             resolve(message);
         });
